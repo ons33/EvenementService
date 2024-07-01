@@ -7,7 +7,7 @@ cloudinary.v2.config({
   api_key: '348193888992711',
   api_secret: 'qefN7t3DU47Kdpnhi9i8G56XHM0',
 });
-
+// creer Evenement
 export const creerEvenement = async (req, res) => {
   try {
     const {
@@ -40,7 +40,10 @@ export const creerEvenement = async (req, res) => {
       dateEvenement,
       lieuEvenement: {
         type: 'Point',
-        coordinates: [parsedLieuEvenement.coordinates[0], parsedLieuEvenement.coordinates[1]], // longitude, latitude
+        coordinates: [
+          parsedLieuEvenement.coordinates[0],
+          parsedLieuEvenement.coordinates[1],
+        ], // longitude, latitude
       },
       typeEvenement,
       nomOrganisateur,
@@ -56,9 +59,7 @@ export const creerEvenement = async (req, res) => {
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 };
-
-
-
+// obtenir Tout Evenements
 export const obtenirTousEvenements = async (req, res) => {
   try {
     const evenements = await Evenement.find();
@@ -68,11 +69,11 @@ export const obtenirTousEvenements = async (req, res) => {
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 };
-
+// obtenir Evenement Par Id
 export const obtenirEvenementParId = async (req, res) => {
   try {
     const evenementId = req.params.id;
-    console.log("evenementId",evenementId);
+    console.log("evenementId", evenementId);
     const evenement = await Evenement.findById(evenementId);
     if (!evenement) {
       return res.status(404).json({ message: 'Événement non trouvé' });
@@ -83,6 +84,7 @@ export const obtenirEvenementParId = async (req, res) => {
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 };
+// obtenir Evenements Par Email
 export const obtenirEvenementsParEmail = async (req, res) => {
   try {
     const { email } = req.params;
@@ -92,10 +94,15 @@ export const obtenirEvenementsParEmail = async (req, res) => {
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 };
+// mettre A Jour Evenement
 export const mettreAJourEvenement = async (req, res) => {
   try {
     const evenementId = req.params.id;
-    const updatedEvenement = await Evenement.findByIdAndUpdate(evenementId, req.body, { new: true });
+    const updatedEvenement = await Evenement.findByIdAndUpdate(
+      evenementId,
+      req.body,
+      { new: true }
+    );
     if (!updatedEvenement) {
       return res.status(404).json({ message: 'Événement non trouvé' });
     }
@@ -105,7 +112,7 @@ export const mettreAJourEvenement = async (req, res) => {
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 };
-
+// supprimer Evenement
 export const supprimerEvenement = async (req, res) => {
   try {
     const evenementId = req.params.id;

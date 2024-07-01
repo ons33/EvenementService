@@ -1,5 +1,14 @@
 import express from 'express';
-import { createParticipation, getParticipationsByEvent, getParticipationsByUser, requestInvitation, approveInvitation, confirmInvitation, getInvitationRequests, validateQRCode } from '../controllers/participationController.js';
+import {
+  createParticipation,
+  getParticipationsByEvent,
+  getParticipationsByUser,
+  requestInvitation,
+  approveInvitation,
+  confirmInvitation,
+  getInvitationRequests,
+  validateQRCode,
+} from '../controllers/participationController.js';
 
 const router = express.Router();
 

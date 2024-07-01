@@ -9,7 +9,7 @@ import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import path from 'path'; // Add this line to import the path module
+import path from 'path'; 
 import QRCodeScan from '../models/QRCodeScan.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -152,7 +152,7 @@ export const getParticipationsByEvent = async (req, res) => {
   }
 };
 
-// Récupérer toutes les participations d'un utilisateur
+// Récupérer toutes les participations utilisateur
 export const getParticipationsByUser = async (req, res) => {
   try {
     const participations = await Participation.find({ userId: req.params.userId }).populate('eventId', 'title date');
@@ -167,7 +167,6 @@ export const createParticipation = async (req, res) => {
   try {
     const { eventId, userId } = req.body;
     const event = await Evenement.findById(eventId);
-console.log(event.modaliteInscription,"ggggggggggg");
     if (!event) {
       return res.status(404).json({ message: 'Événement non trouvé' });
     }
@@ -194,15 +193,17 @@ console.log(event.modaliteInscription,"ggggggggggg");
 
       res.status(200).json({ message: 'Invitation request sent. Please wait for approval.' });
     } else if (event.modaliteInscription === 'Payant') {
-      console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
       const newParticipation = new Participation({ eventId, userId });
       await newParticipation.save();
       event.nombreParticipant += 1;
 
       event.currentParticipants += 1;
       await event.save();
-      const reservationLink = `http://your-app.com/complete-payment?eventId=${eventId}&userId=${userId}`;
-      res.status(200).json({ message: 'Please complete your payment.', reservationLink });}
+      sendEmail(userId, 'Confirmation de participation', `Vous vous êtes pré-inscrit avec succès à l'événement:  ${event.intitule} . L'organisateur vous contactera pour le paiement.`);
+
+      res.status(201).json(newParticipation);
+
+    }
   } catch (error) {
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
@@ -212,9 +213,7 @@ console.log(event.modaliteInscription,"ggggggggggg");
 export const requestInvitation = async (req, res) => {
   try {
     const { eventId, userId } = req.body;
-console.log(eventId,userId, "hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
     const event = await Evenement.findById(eventId);
-    console.log("eventtttt",event);
     if (!event) {
       return res.status(404).json({ message: 'Événement non trouvé' });
     }
@@ -224,7 +223,6 @@ console.log(eventId,userId, "hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
     }
 
     const newRequest = new InvitationRequest({ eventId, userId});
-    console.log("newRequest",newRequest);
     await newRequest.save();
 
     res.status(200).json({ message: 'Invitation request sent. Please wait for approval.' });
@@ -258,7 +256,7 @@ export const validateQRCode = async (req, res) => {
   }
 };
 
-// Approuver une demande d'invitation
+// Approuver une demande d'invitation!!!!!
 export const approveInvitation = async (req, res) => {
   try {
     const { requestId } = req.body;
@@ -341,9 +339,7 @@ export const confirmInvitation = async (req, res) => {
 // Récupérer toutes les demandes d'invitation pour un événement
 export const getInvitationRequests = async (req, res) => {
   try {
-    console.log(req.query.eventId);
     const requests = await InvitationRequest.find({ eventId: req.query.eventId });
-    console.log("requests",requests);
     res.json(requests);
   } catch (error) {
     res.status(500).json({ error: 'Erreur interne du serveur' });

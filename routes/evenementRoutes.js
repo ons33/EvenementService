@@ -7,7 +7,7 @@ import {
   supprimerEvenement,
   obtenirEvenementsParEmail,
 } from '../controllers/evenementController.js';
-import upload from '../config/Multer.js'; // Use local storage configuration
+import upload from '../config/Multer.js'; 
 
 const router = express.Router();
 

@@ -14,7 +14,7 @@ const app = express();
 
 // Connect to MongoDB
 connectDataBase();
-// Middleware
+
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -25,7 +25,7 @@ app.use('/api/participations', participationRoutes);
 // Start the server
 const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on porttt ${PORT}`);
 });
 const __dirname = path.resolve();
 

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const EvenementSchema = new mongoose.Schema({
   intitule: { type: String, required: true },
   categorieEvenement: { type: String, required: true },
-  image: { type: String, required: true },
+  image: { type: String, required: false },
 
   description: { type: String, required: true },
   dateEvenement: { type: Date, required: true },

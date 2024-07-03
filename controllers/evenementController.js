@@ -126,3 +126,16 @@ export const supprimerEvenement = async (req, res) => {
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 };
+export const test = async (req, res) => {
+  try {
+    const evenementId = req.params.id;
+    const deletedEvenement = await Evenement.findByIdAndDelete(evenementId);
+    if (!deletedEvenement) {
+      return res.status(404).json({ message: 'Événement non trouvé' });
+    }
+    res.json({ message: 'Événement supprimé avec succès' });
+  } catch (error) {
+    console.error('Erreur lors de la suppression de l\'événement :', error);
+    res.status(500).json({ error: 'Erreur interne du serveur' });
+  }
+};

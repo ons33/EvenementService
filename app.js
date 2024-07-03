@@ -31,3 +31,4 @@ const __dirname = path.resolve();
 
 // Middleware to serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+export { app };
